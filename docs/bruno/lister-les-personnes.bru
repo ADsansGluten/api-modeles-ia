@@ -1,0 +1,30 @@
+meta {
+  name: Lister les personnes avec leur modèle favori
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/api/personnes
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 200", function () {
+    expect(res.status).to.equal(200);
+  });
+  test("Le corps est un tableau", function () {
+    expect(res.body).to.be.an("array");
+  });
+  test("Chaque personne a un champ favoriteModel", function () {
+    res.body.forEach(function (personne) {
+      expect(personne).to.have.property("favoriteModel");
+    });
+  });
+  test("Au moins une personne a les données du modèle fusionnées", function () {
+    const avecModele = res.body.filter(function (p) { return p.favoriteModel !== null; });
+    expect(avecModele.length).to.be.above(0);
+    expect(avecModele[0].favoriteModel).to.have.property("title");
+  });
+}

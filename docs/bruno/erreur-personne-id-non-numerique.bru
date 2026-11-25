@@ -1,0 +1,20 @@
+meta {
+  name: Erreur - identifiant de personne non numérique
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/personnes/abc
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 400", function () {
+    expect(res.status).to.equal(400);
+  });
+  test("Message cohérent", function () {
+    expect(res.body.error).to.equal("Identifiant invalide");
+  });
+}

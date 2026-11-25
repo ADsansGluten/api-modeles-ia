@@ -1,0 +1,24 @@
+meta {
+  name: Récupérer une personne avec son modèle favori
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/api/personnes/1
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 200", function () {
+    expect(res.status).to.equal(200);
+  });
+  test("C'est la bonne personne", function () {
+    expect(res.body.id).to.equal(1);
+  });
+  test("Le modèle favori vient de l'autre base", function () {
+    expect(res.body.favoriteModel).to.have.property("title");
+    expect(res.body.favoriteModel).to.have.property("editor");
+  });
+}
