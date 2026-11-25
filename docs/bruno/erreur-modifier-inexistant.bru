@@ -1,0 +1,30 @@
+meta {
+  name: Erreur - modifier un modèle inexistant
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{baseUrl}}/api/ai-models/999999
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Fantôme",
+    "editor": "Test Labs",
+    "releaseYear": 2025,
+    "genre": "LLM",
+    "rating": 7
+  }
+}
+
+tests {
+  test("Réponse 404", function () {
+    expect(res.status).to.equal(404);
+  });
+  test("Message cohérent", function () {
+    expect(res.body.error).to.equal("Modèle introuvable");
+  });
+}

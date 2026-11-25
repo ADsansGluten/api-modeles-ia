@@ -1,0 +1,31 @@
+meta {
+  name: Erreur - note supérieure à 10
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/ai-models
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Test note",
+    "editor": "Test Labs",
+    "releaseYear": 2025,
+    "genre": "LLM",
+    "rating": 11
+  }
+}
+
+tests {
+  test("Réponse 400", function () {
+    expect(res.status).to.equal(400);
+  });
+  test("Message cohérent", function () {
+    expect(res.body.error).to.equal("Données invalides");
+    expect(res.body.details).to.include("La note doit être comprise entre 0 et 10");
+  });
+}

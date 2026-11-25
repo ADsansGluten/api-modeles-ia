@@ -1,0 +1,30 @@
+meta {
+  name: Erreur - année sous forme de texte
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/ai-models
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Test année",
+    "editor": "Test Labs",
+    "releaseYear": "deux mille vingt-cinq",
+    "genre": "LLM",
+    "rating": 7
+  }
+}
+
+tests {
+  test("Réponse 400", function () {
+    expect(res.status).to.equal(400);
+  });
+  test("Message cohérent", function () {
+    expect(res.body.error).to.equal("Données invalides");
+  });
+}
