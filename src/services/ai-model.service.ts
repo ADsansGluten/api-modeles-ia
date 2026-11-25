@@ -14,7 +14,7 @@ export class HttpError extends Error {
 }
 
 // Vérifie que l'identifiant est un entier strictement positif.
-function parseId(value: string): number {
+export function parseId(value: string): number {
     if (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))) {
         throw new HttpError(400, 'Identifiant invalide', ['L\'identifiant doit être un entier strictement positif']);
     }

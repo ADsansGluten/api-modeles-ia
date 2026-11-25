@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {projectRoot} from './config/paths.js';
 import {aiModelRoutes} from './routes/ai-model.routes.js';
+import {personneRoutes} from './routes/personne.routes.js';
 import {HttpError} from './services/ai-model.service.js';
 
 // 1. Créer l'application et lui permettre de lire les requêtes JSON.
@@ -27,6 +28,7 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(document));
 
 // 4. Brancher les cinq routes de gestion des modèles.
 app.use('/api/ai-models', aiModelRoutes);
+app.use('/api/personnes', personneRoutes);
 
 // 5. Répondre 404 si aucune route ne correspond à l'URL demandée.
 app.use((_req, res) => {
