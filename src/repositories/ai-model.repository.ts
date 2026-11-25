@@ -2,31 +2,18 @@ import {db} from '../database/database.js';
 import {AiModel} from '../models/ai-model.model.js';
 import type {CreateAiModelInput} from '../models/ai-model.model.js';
 
-// Une ligne telle que SQLite la renvoie (noms de colonnes en snake_case).
-interface AiModelRow {
-    id: number;
-    title: string;
-    editor: string;
-    release_year: number;
-    genre: string;
-    rating: number;
-}
-
-// Convertit une ligne SQL (release_year) en objet TypeScript (releaseYear).
-function toAiModel(row: AiModelRow): AiModel {
-    return new AiModel(row.id, row.title, row.editor, row.release_year, row.genre, row.rating);
-}
+// Colonnes à lire. « release_year AS releaseYear » renomme la colonne SQL
+// pour que chaque ligne ait directement la forme de la classe AiModel.
+const SELECT_COLUMNS = 'id, title, editor, release_year AS releaseYear, genre, rating';
 
 // Récupérer tous les modèles.
 export function findAll(): AiModel[] {
-    const rows = db.prepare('SELECT * FROM ai_models ORDER BY id').all() as AiModelRow[];
-    return rows.map(toAiModel);
+    return db.prepare(`SELECT ${SELECT_COLUMNS} FROM ai_models ORDER BY id`).all() as AiModel[];
 }
 
 // Récupérer un modèle par son identifiant (undefined s'il n'existe pas).
 export function findById(id: number): AiModel | undefined {
-    const row = db.prepare('SELECT * FROM ai_models WHERE id = ?').get(id) as AiModelRow | undefined;
-    return row ? toAiModel(row) : undefined;
+    return db.prepare(`SELECT ${SELECT_COLUMNS} FROM ai_models WHERE id = ?`).get(id) as AiModel | undefined;
 }
 
 // Ajouter un modèle et le renvoyer avec son id généré.
@@ -50,4 +37,4 @@ export function update(id: number, input: CreateAiModelInput): AiModel | undefin
 export function remove(id: number): boolean {
     const result = db.prepare('DELETE FROM ai_models WHERE id = ?').run(id);
     return result.changes > 0;
-} 
+}
