@@ -99,6 +99,46 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 
+  /api/personnes:
+    get:
+      summary: Récupérer toutes les personnes avec leur modèle favori
+      description: Lit les personnes dans la base des personnes et leur modèle favori dans la base des modèles, en une seule requête.
+      responses:
+        '200':
+          description: Liste des personnes récupérée avec succès.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonneWithModel'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/personnes/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          minimum: 1
+    get:
+      summary: Récupérer une personne avec son modèle favori
+      responses:
+        '200':
+          description: Personne trouvée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonneWithModel'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/PersonneNotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
 components:
   schemas:
     AiModel:
@@ -158,6 +198,23 @@ components:
           type: array
           items:
             type: string
+    PersonneWithModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          example: Alice
+        lastName:
+          type: string
+          example: Martin
+        favoriteModel:
+          nullable: true
+          description: Modèle favori, lu dans la base des modèles. Vaut null si la personne n'en a pas ou si le modèle n'existe plus.
+          allOf:
+            - $ref: '#/components/schemas/AiModel'
   responses:
     BadRequest:
       description: Identifiant ou données invalides.
@@ -173,6 +230,12 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
     InternalError:
       description: Erreur interne du serveur.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PersonneNotFound:
+      description: Personne introuvable.
       content:
         application/json:
           schema:
