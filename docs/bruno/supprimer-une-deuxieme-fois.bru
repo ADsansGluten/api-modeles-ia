@@ -1,0 +1,17 @@
+meta {
+  name: Supprimer une deuxième fois le même modèle
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/api/ai-models/{{modelId}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 404", function () {
+    expect(res.status).to.equal(404);
+  });
+}

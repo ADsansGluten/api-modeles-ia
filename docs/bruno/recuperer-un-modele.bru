@@ -1,0 +1,20 @@
+meta {
+  name: Récupérer un modèle
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/ai-models/{{modelId}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 200", function () {
+    expect(res.status).to.equal(200);
+  });
+  test("C'est le bon modèle", function () {
+    expect(res.body.title).to.equal("Modèle de test");
+  });
+}

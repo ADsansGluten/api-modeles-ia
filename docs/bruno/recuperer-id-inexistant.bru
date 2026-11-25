@@ -1,0 +1,17 @@
+meta {
+  name: Récupérer un identifiant inexistant
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/ai-models/999999
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 404", function () {
+    expect(res.status).to.equal(404);
+  });
+}

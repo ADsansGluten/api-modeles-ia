@@ -1,0 +1,20 @@
+meta {
+  name: Lister les modèles
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/ai-models
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 200", function () {
+    expect(res.status).to.equal(200);
+  });
+  test("Le corps est un tableau JSON", function () {
+    expect(res.body).to.be.an("array");
+  });
+}

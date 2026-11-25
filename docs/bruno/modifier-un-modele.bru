@@ -1,0 +1,30 @@
+meta {
+  name: Modifier un modèle
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/ai-models/{{modelId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Modèle de test modifié",
+    "editor": "Test Labs",
+    "releaseYear": 2025,
+    "genre": "LLM",
+    "rating": 8
+  }
+}
+
+tests {
+  test("Réponse 200", function () {
+    expect(res.status).to.equal(200);
+  });
+  test("Le titre est modifié", function () {
+    expect(res.body.title).to.equal("Modèle de test modifié");
+  });
+}

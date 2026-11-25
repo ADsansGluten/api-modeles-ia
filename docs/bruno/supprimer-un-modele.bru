@@ -1,0 +1,17 @@
+meta {
+  name: Supprimer un modèle
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/ai-models/{{modelId}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("Réponse 204", function () {
+    expect(res.status).to.equal(204);
+  });
+}
